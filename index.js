@@ -3,7 +3,7 @@ const saveInput = document.getElementById('save-input');
 const editorArea = document.getElementById('editor');
 
 // https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex
-function buf2hex(buffer) { // buffer is an ArrayBuffer
+const buf2hex = (buffer) => {
     return [...buffer]
         .slice(0, 0x100)
         .map(x => x.toString(16).padStart(2, '0'))
