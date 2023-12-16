@@ -1,0 +1,8 @@
+* {
+    font-family: sans-serif;
+}
+
+.hex {
+    font-family: monospace;
+    max-width: 48ch;
+}
