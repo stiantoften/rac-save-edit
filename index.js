@@ -1,3 +1,4 @@
+
 const saveInput = document.getElementById('save-input');
 const editorArea = document.getElementById('editor');
 
@@ -27,5 +28,6 @@ saveInput.addEventListener('change', async () => {
 
     editor.innerHTML += `<br><div class=hex>${buf2hex(arr)}</div>`
     editor.innerHTML += `<br><div>Bolt count: ${arr[0x24]}</div>`
+    editor.innerHTML += `<br><div>Date: ${readBcdByte(arr, 0x4d)}/${readBcdByte(arr, 0x4e)}/${readBcdByte(arr, 0x4f)}</div>`
 }, false);
 
