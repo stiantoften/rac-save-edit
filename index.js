@@ -30,7 +30,7 @@ saveInput.addEventListener('change', async () => {
     if (file.name.endsWith('.ps2')) {
         const content = readPs2(arr);
         console.log(content);
-        const save0 = content.rootDir.content[2].content.find(c => c.name === "save0.bin");
+        const save0 = content.content[2].content.find(c => c.name === "save0.bin");
         savearr = save0.content;
     }
 

@@ -110,11 +110,20 @@ const readPs2 = (/** @type {Uint8Array} */ arr) => {
         return files;
     }
 
-    const rootDir = getFiles(readCluster(allocStart + rootDirClusterNum), true)[0]
+
+
+    const content = [];
+    let link = 0;
+    for (let i = 0; i < 9999; i++) {
+        content.push(...getFiles(readCluster(allocStart + link)))
+        link = readUint16(fatTable, 4 * link)
+        if (link === 0xffff) break;
+    }
+
 
     return {
         magic, version, pageLength, pagesPerCluster, pagesPerBlock,
         clusterCount, allocStart, allocEnd, clusterRootDir: rootDirClusterNum, bblock1,
-        bblock2, indFatTable, fatTable, rootDir
+        bblock2, indFatTable, fatTable, content
     }
 }
