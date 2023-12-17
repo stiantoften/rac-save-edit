@@ -60,11 +60,10 @@ const readPs2 = (/** @type {Uint8Array} */ arr) => {
         fatTable.push(...readCluster(indFatTable[i]))
     }
 
-    const getFiles = (cluster) => {
+    const getFiles = (cluster, isRoot = false) => {
         const files = [];
         for (let i = 0; i < 2; i++) {
             const ioffset = (i * (clusterSize / 2 - PARITY_LENGTH))
-
 
             const modeBytes = readUint16(cluster, ioffset + 0)
             if (modeBytes == 0xffff) {
@@ -88,24 +87,21 @@ const readPs2 = (/** @type {Uint8Array} */ arr) => {
 
             const content = [];
 
-            if (type === 'directory' && name !== "." && name !== "..") {
+            if ((type === 'directory' && name !== "." && name !== "..") || isRoot) {
                 let link = firstCluster;
-                content.push(...getFiles(readCluster(allocStart + link)))
                 for (let i = 0; i < 9999; i++) {
+                    content.push(...getFiles(readCluster(allocStart + link)))
                     link = readUint16(fatTable, 4 * link)
                     if (link === 0xffff) break;
-
-                    content.push(...getFiles(readCluster(allocStart + link)))
                 }
             }
 
             if (type === 'file') {
                 let link = firstCluster;
-                content.push(...readCluster(allocStart + link))
                 for (let i = 0; i < 9999; i++) {
+                    content.push(...readCluster(allocStart + link))
                     link = readUint16(fatTable, 4 * link)
                     if (link === 0xffff) break;
-                    content.push(...readCluster(allocStart + link))
                 }
             }
 
@@ -114,8 +110,7 @@ const readPs2 = (/** @type {Uint8Array} */ arr) => {
         return files;
     }
 
-    const rootDir = getFiles(readCluster(allocStart + rootDirClusterNum + 1))[0]
-
+    const rootDir = getFiles(readCluster(allocStart + rootDirClusterNum), true)[0]
 
     return {
         magic, version, pageLength, pagesPerCluster, pagesPerBlock,
