@@ -9,10 +9,10 @@ fetch('./games/db.json').then((res) =>
     gameDb = res;
 });
 
-const gameList = [];
+let gameList = [];
 
-
-const buf2hex = (buffer) => buffer.map(x => x.toString(16).padStart(2, '0')).join(' ');
+// https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex
+const buf2hex = (buffer) => [... new Uint8Array(buffer)].map(x => x.toString(16).padStart(2, '0')).join(' ');
 
 const readFile = (file) => new Promise((resolve, reject) => {
     var reader = new FileReader();
@@ -61,22 +61,23 @@ const deleteDataArea = () => {
 const deployGameSelector = (content) => {
     const gameSelector = document.createElement('select')
     gameSelector.id = 'gameSelector'
-
-    content.forEach((c, i) => {
-        const dbGame = gameDb.find(g => g.codes.includes(c.name))
-        if (dbGame) {
-            const newGame = { ...c, friendlyName: dbGame.name }
-            gameList.push(newGame)
-
-            const gameOption = document.createElement('option')
-            gameOption.value = i
-            gameOption.innerHTML = newGame.friendlyName;
-            gameSelector.appendChild(gameOption)
-        }
-    })
-
     gameSelector.addEventListener('change', onChangeGame)
 
+    gameList = [];
+    content.forEach(c => {
+        const dbGame = gameDb.find(g => g.codes.includes(c.name))
+
+        if (dbGame) {
+            const newGame = { ...c, friendlyName: dbGame.name }
+
+            const gameOption = document.createElement('option')
+            gameOption.value = gameList.length
+            gameOption.innerHTML = newGame.friendlyName;
+            gameSelector.appendChild(gameOption)
+
+            gameList.push(newGame)
+        }
+    })
 
     editor.appendChild(gameSelector)
 }
@@ -97,13 +98,12 @@ saveInput.addEventListener('change', async () => {
 
     let savearr = arr;
 
+    deleteGameSelector();
     if (file.name.endsWith('.ps2')) {
         const content = readPs2(arr);
-        console.log(content);
         const save0 = content.content[2].content.find(c => c.name === "save0.bin");
         savearr = save0.content;
 
-        deleteGameSelector();
         deployGameSelector(content.content)
     }
 
