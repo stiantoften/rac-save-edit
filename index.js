@@ -2,6 +2,16 @@
 const /** @type {HTMLInputElement} */ saveInput = document.getElementById('save-input')
 const editorArea = document.getElementById('editor');
 
+let gameDb = [];
+fetch('./games/db.json').then((res) =>
+    res.json()
+).then((res) => {
+    gameDb = res;
+});
+
+const gameList = [];
+
+
 // https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex
 const buf2hex = (buffer) => {
     return [...buffer]
@@ -18,6 +28,42 @@ const readFile = (file) => new Promise((resolve, reject) => {
     }
 });
 
+const onChangeGame = (e) => {
+    deleteDataArea();
+    deployDataArea(gameList[e.target.value].content.find(c => c.name === "save0.bin").content)
+}
+
+const deployDataArea = (savearr) => {
+    const dataArea = document.createElement('div');
+    dataArea.id = 'dataArea'
+    {
+        const hexDisplay = document.createElement('div')
+        hexDisplay.className = 'hex'
+        hexDisplay.innerHTML = buf2hex(savearr);
+
+        const boltCount = document.createElement('div')
+        boltCount.innerHTML = `Bolt count: ${savearr[0x24]}`
+
+        const date = document.createElement('div');
+        date.innerHTML = `Date: ${readBcdByte(savearr, 0x4d)}/${readBcdByte(savearr, 0x4e)}/${readBcdByte(savearr, 0x4f)}`
+
+        dataArea.appendChild(document.createElement('br'))
+        dataArea.appendChild(hexDisplay)
+        dataArea.appendChild(document.createElement('br'))
+        dataArea.appendChild(boltCount)
+        dataArea.appendChild(document.createElement('br'))
+        dataArea.appendChild(date)
+    }
+    editor.appendChild(dataArea)
+}
+
+const deleteDataArea = () => {
+    const dataArea = document.getElementById('dataArea');
+    if (dataArea) {
+        dataArea.remove();
+    }
+}
+
 saveInput.addEventListener('change', async () => {
     const file = saveInput.files[0]
     if (!file) return;
@@ -32,10 +78,25 @@ saveInput.addEventListener('change', async () => {
         console.log(content);
         const save0 = content.content[2].content.find(c => c.name === "save0.bin");
         savearr = save0.content;
+
+        const gameSelector = document.createElement('select')
+        gameDb.forEach((dbGame, i) => {
+            const game = content.content.find(v => dbGame.codes.includes(v.name))
+            const newGame = { ...game, friendlyName: dbGame.name }
+            gameList.push(newGame)
+
+            const gameOption = document.createElement('option')
+            gameOption.value = i
+            gameOption.innerHTML = newGame.friendlyName;
+            gameSelector.appendChild(gameOption)
+        })
+        gameSelector.addEventListener('change', onChangeGame)
+
+        editor.appendChild(document.createElement('br'))
+        editor.appendChild(gameSelector)
     }
 
-    editor.innerHTML += `<br><div class=hex>${buf2hex(savearr)}</div>`
-    editor.innerHTML += `<br><div>Bolt count: ${savearr[0x24]}</div>`
-    editor.innerHTML += `<br><div>Date: ${readBcdByte(savearr, 0x4d)}/${readBcdByte(savearr, 0x4e)}/${readBcdByte(savearr, 0x4f)}</div>`
+    deleteDataArea();
+    deployDataArea(savearr);
 }, false);
 
