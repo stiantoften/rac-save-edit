@@ -1,5 +1,5 @@
 
-const saveInput = document.getElementById('save-input');
+const /** @type {HTMLInputElement} */ saveInput = document.getElementById('save-input')
 const editorArea = document.getElementById('editor');
 
 // https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex
@@ -19,15 +19,23 @@ const readFile = (file) => new Promise((resolve, reject) => {
 });
 
 saveInput.addEventListener('change', async () => {
-    console.log('changed')
-    const file = saveInput.files[0];
+    const file = saveInput.files[0]
     if (!file) return;
 
     const ab = await readFile(file);
     const arr = new Uint8Array(ab);
 
-    editor.innerHTML += `<br><div class=hex>${buf2hex(arr)}</div>`
-    editor.innerHTML += `<br><div>Bolt count: ${arr[0x24]}</div>`
-    editor.innerHTML += `<br><div>Date: ${readBcdByte(arr, 0x4d)}/${readBcdByte(arr, 0x4e)}/${readBcdByte(arr, 0x4f)}</div>`
+    let savearr = arr;
+
+    if (file.name.endsWith('.ps2')) {
+        const content = readPs2(arr);
+        console.log(content);
+        const save0 = content.rootDir.content.find(c => c.name === "save0.bin");
+        savearr = save0.content;
+    }
+
+    editor.innerHTML += `<br><div class=hex>${buf2hex(savearr)}</div>`
+    editor.innerHTML += `<br><div>Bolt count: ${savearr[0x24]}</div>`
+    editor.innerHTML += `<br><div>Date: ${readBcdByte(savearr, 0x4d)}/${readBcdByte(savearr, 0x4e)}/${readBcdByte(savearr, 0x4f)}</div>`
 }, false);
 
