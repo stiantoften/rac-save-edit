@@ -58,6 +58,36 @@ const deleteDataArea = () => {
     }
 }
 
+const deployGameSelector = (content) => {
+    const gameSelector = document.createElement('select')
+    gameSelector.id = 'gameSelector'
+
+    content.forEach((c, i) => {
+        const dbGame = gameDb.find(g => g.codes.includes(c.name))
+        if (dbGame) {
+            const newGame = { ...c, friendlyName: dbGame.name }
+            gameList.push(newGame)
+
+            const gameOption = document.createElement('option')
+            gameOption.value = i
+            gameOption.innerHTML = newGame.friendlyName;
+            gameSelector.appendChild(gameOption)
+        }
+    })
+
+    gameSelector.addEventListener('change', onChangeGame)
+
+
+    editor.appendChild(gameSelector)
+}
+
+const deleteGameSelector = () => {
+    const gameSelector = document.getElementById('gameSelector');
+    if (gameSelector) {
+        gameSelector.remove();
+    }
+}
+
 saveInput.addEventListener('change', async () => {
     const file = saveInput.files[0]
     if (!file) return;
@@ -73,21 +103,8 @@ saveInput.addEventListener('change', async () => {
         const save0 = content.content[2].content.find(c => c.name === "save0.bin");
         savearr = save0.content;
 
-        const gameSelector = document.createElement('select')
-        gameDb.forEach((dbGame, i) => {
-            const game = content.content.find(v => dbGame.codes.includes(v.name))
-            const newGame = { ...game, friendlyName: dbGame.name }
-            gameList.push(newGame)
-
-            const gameOption = document.createElement('option')
-            gameOption.value = i
-            gameOption.innerHTML = newGame.friendlyName;
-            gameSelector.appendChild(gameOption)
-        })
-        gameSelector.addEventListener('change', onChangeGame)
-
-        editor.appendChild(document.createElement('br'))
-        editor.appendChild(gameSelector)
+        deleteGameSelector();
+        deployGameSelector(content.content)
     }
 
     deleteDataArea();
