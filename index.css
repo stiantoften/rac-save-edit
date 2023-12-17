@@ -5,4 +5,7 @@
 .hex {
     font-family: monospace;
     max-width: 48ch;
+    height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

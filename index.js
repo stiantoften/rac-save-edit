@@ -12,13 +12,7 @@ fetch('./games/db.json').then((res) =>
 const gameList = [];
 
 
-// https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex
-const buf2hex = (buffer) => {
-    return [...buffer]
-        .slice(0, 0x100)
-        .map(x => x.toString(16).padStart(2, '0'))
-        .join(' ');
-}
+const buf2hex = (buffer) => buffer.map(x => x.toString(16).padStart(2, '0')).join(' ');
 
 const readFile = (file) => new Promise((resolve, reject) => {
     var reader = new FileReader();
