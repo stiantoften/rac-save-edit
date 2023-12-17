@@ -1,6 +1,5 @@
 
 const /** @type {HTMLInputElement} */ saveInput = document.getElementById('save-input')
-const editorArea = document.getElementById('editor');
 
 let gameDb = [];
 fetch('./games/db.json').then((res) =>
@@ -110,4 +109,3 @@ saveInput.addEventListener('change', async () => {
     deleteDataArea();
     deployDataArea(savearr);
 }, false);
-

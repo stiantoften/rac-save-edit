@@ -1,6 +1,7 @@
 [
     {
         "name": "Ratchet & Clank",
+        "file": "rac1.json",
         "codes": [
             "BASCUS-97199RATCHET"
         ]
