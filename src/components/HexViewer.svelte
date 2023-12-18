@@ -5,7 +5,12 @@
 <div>
     {[...data]
         .map((c, i) => {
-            let hexByte = c.toString(16).padStart(2, "0");
+            let hexByte;
+            if (c) {
+                hexByte = c.toString(16).padStart(2, "0");
+            } else {
+                hexByte = "00";
+            }
             if ((i + 1) % 0x10 === 0) hexByte += "\n";
             return hexByte;
         })
