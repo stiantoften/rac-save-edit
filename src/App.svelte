@@ -1,14 +1,22 @@
 <script>
-  import Dropzone from "./components/Dropzone.svelte";
-  import { readBcdByte } from "./lib/buffer-reader";
+  import gameDB from "./assets/db.json";
   import { readPs2 } from "./lib/ps2-reader";
+  import { readBcdByte } from "./lib/buffer-reader";
+
+  import Dropzone from "./components/Dropzone.svelte";
+  import GameSelector from "./components/GameSelector.svelte";
+  import SaveSelector from "./components/SaveSelector.svelte";
 
   let file;
-  let boltCount = 0;
+  let boltCount;
   let date;
+  let mc;
+  let selectedGame;
+  let selectedSave;
+  let save;
 
   const readFile = (file) =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
       reader.onload = (e) => {
@@ -20,18 +28,14 @@
     const buff = await readFile(file);
     const arr = new Uint8Array(buff);
 
-    let save;
     if (file.name.endsWith(".ps2")) {
-      const mc = readPs2(arr);
-      const save0 = mc.content
-        .find((c) => c.name === "BASCUS-97199RATCHET")
-        .content.find((c) => c.name === "save0.bin").content;
-
-      save = save0;
+      mc = readPs2(arr);
     } else if (file.name.endsWith(".bin")) {
       save = arr;
     }
+  };
 
+  $: if (save) {
     boltCount = save[36];
     date =
       readBcdByte(save, 0x4d) +
@@ -39,20 +43,30 @@
       readBcdByte(save, 0x4e) +
       "/" +
       readBcdByte(save, 0x4f);
-  };
+  }
 
   $: if (file) {
     processFile(file);
+  }
+
+  $: if (selectedSave) {
+    save = selectedSave.content;
   }
 </script>
 
 <h1>Rachet & Clank Save Editor</h1>
 <div>
-  <Dropzone bind:file />
-  <br />
-  {#if boltCount}
+  {#if !file}
+    <Dropzone bind:file />
+  {/if}
+
+  <GameSelector {mc} {gameDB} bind:selected={selectedGame} />
+  <SaveSelector game={selectedGame} bind:selected={selectedSave} />
+
+  {#if boltCount !== null && boltCount != undefined}
     <div>Bolt count: {boltCount}</div>
   {/if}
+
   {#if date}
     <div>Date: {date}</div>
   {/if}
