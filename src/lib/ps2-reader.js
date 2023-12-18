@@ -1,6 +1,8 @@
+import { readUint16, readUint32, readBytes } from "./buffer-reader";
+
 const PARITY_LENGTH = 0x10;
 
-const readPs2 = (/** @type {Uint8Array} */ arr) => {
+export const readPs2 = (/** @type {Uint8Array} */ arr) => {
     const decoder = new TextDecoder();
 
     const magic = decoder.decode(arr.buffer.slice(0, 0x1c));
@@ -46,7 +48,7 @@ const readPs2 = (/** @type {Uint8Array} */ arr) => {
     }
 
     const indFatTableCluster = readCluster(indFatTableTable[0]);
-    indFatTable = [];
+    const indFatTable = [];
     for (let i = 0; i < indFatTableCluster.length; i += 4) {
         const val = readUint32(indFatTableCluster, i);
         if (val == -1) {
@@ -55,7 +57,7 @@ const readPs2 = (/** @type {Uint8Array} */ arr) => {
         indFatTable.push(val)
     }
 
-    fatTable = [];
+    const fatTable = [];
     for (let i = 0; i < indFatTable.length; i++) {
         fatTable.push(...readCluster(indFatTable[i]))
     }
