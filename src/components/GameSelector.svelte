@@ -13,3 +13,10 @@
         {/each}
     </select>
 {/if}
+
+<style>
+    select {
+        padding: 10px;
+        border-radius: 4px;
+    }
+</style>

@@ -25,6 +25,8 @@
 
 <style>
     div {
+        border: 1px solid black;
+        border-radius: 4px;
         padding: 10px;
         resize: vertical;
         white-space: pre;
@@ -32,5 +34,15 @@
         overflow-y: auto;
         height: 400px;
         text-align: left;
+    }
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
     }
 </style>

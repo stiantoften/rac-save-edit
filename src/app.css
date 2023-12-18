@@ -18,9 +18,27 @@
   text-align: center;
 }
 
+button {
+  color: white;
+}
+
+select {
+  background-color: #242424;
+  color: white;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
+  }
+
+  button {
+    color: black;
+  }
+
+  select {
+    background-color: white;
+    color: black;
   }
 }
