@@ -6,14 +6,17 @@
   import Dropzone from "./components/Dropzone.svelte";
   import GameSelector from "./components/GameSelector.svelte";
   import SaveSelector from "./components/SaveSelector.svelte";
+  import HexViewer from "./components/HexViewer.svelte";
+  import ResetButton from "./components/ResetButton.svelte";
 
   let file;
+  let mc;
+  let save;
+
   let boltCount;
   let date;
-  let mc;
   let selectedGame;
   let selectedSave;
-  let save;
 
   const readFile = (file) =>
     new Promise((resolve) => {
@@ -52,23 +55,35 @@
   $: if (selectedSave) {
     save = selectedSave.content;
   }
+
+  const handleReset = () => {
+    file = null;
+    mc = null;
+    save = null;
+    console.log(file);
+  };
 </script>
 
 <h1>Rachet & Clank Save Editor</h1>
 <div>
   {#if !file}
     <Dropzone bind:file />
-  {/if}
+  {:else}
+    <ResetButton on:click={handleReset} />
+    <GameSelector {mc} {gameDB} bind:selected={selectedGame} />
+    <SaveSelector game={selectedGame} bind:selected={selectedSave} />
 
-  <GameSelector {mc} {gameDB} bind:selected={selectedGame} />
-  <SaveSelector game={selectedGame} bind:selected={selectedSave} />
+    {#if save}
+      <HexViewer data={save} />
+    {/if}
 
-  {#if boltCount !== null && boltCount != undefined}
-    <div>Bolt count: {boltCount}</div>
-  {/if}
+    {#if boltCount !== null && boltCount != undefined}
+      <div>Bolt count: {boltCount}</div>
+    {/if}
 
-  {#if date}
-    <div>Date: {date}</div>
+    {#if date}
+      <div>Date: {date}</div>
+    {/if}
   {/if}
 </div>
 
@@ -77,5 +92,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    gap: 10px;
   }
 </style>
