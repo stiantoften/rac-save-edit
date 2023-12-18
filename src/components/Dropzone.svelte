@@ -22,7 +22,6 @@
         font-size: 20px;
     }
     .dropzone {
-        width: 400px;
         height: 200px;
         border: 1px dashed black;
         border-radius: 14px;

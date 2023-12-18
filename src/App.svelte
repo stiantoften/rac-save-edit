@@ -100,7 +100,7 @@
 <style>
   div {
     margin: 0 auto;
-    width: 800px;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     gap: 10px;
