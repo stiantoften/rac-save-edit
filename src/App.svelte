@@ -8,6 +8,7 @@
   import SaveSelector from "./components/SaveSelector.svelte";
   import HexViewer from "./components/HexViewer.svelte";
   import ResetButton from "./components/ResetButton.svelte";
+  import TabSystem from "./components/TabSystem.svelte";
 
   let file;
   let mc;
@@ -15,8 +16,11 @@
 
   let boltCount;
   let date;
+
   let selectedGame;
   let selectedSave;
+
+  let gameData;
 
   const readFile = (file) =>
     new Promise((resolve) => {
@@ -38,6 +42,14 @@
     }
   };
 
+  const handleGameChange = async (game) => {
+    const dbGame = gameDB.find((g) => g.codes.includes(game.name));
+    if (!dbGame) return;
+
+    const fetchedGame = await fetch(`rac-save-edit/${dbGame.file}`);
+    gameData = await fetchedGame.json();
+  };
+
   $: if (save) {
     boltCount = save[36];
     date =
@@ -50,6 +62,10 @@
 
   $: if (file) {
     processFile(file);
+  }
+
+  $: if (selectedGame) {
+    handleGameChange(selectedGame);
   }
 
   $: if (selectedSave) {
@@ -76,21 +92,16 @@
     {#if save}
       <HexViewer data={save} />
     {/if}
-
-    {#if boltCount !== null && boltCount != undefined}
-      <div>Bolt count: {boltCount}</div>
-    {/if}
-
-    {#if date}
-      <div>Date: {date}</div>
-    {/if}
   {/if}
+
+  <TabSystem {gameData} bind:save />
 </div>
 
 <style>
   div {
+    margin: 0 auto;
+    width: 800px;
     display: flex;
-    align-items: center;
     flex-direction: column;
     gap: 10px;
   }

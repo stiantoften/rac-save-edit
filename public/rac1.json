@@ -1,0 +1,31 @@
+{
+    "categories": [
+        {
+            "name": "General"
+        },
+        {
+            "name": "Weapons"
+        },
+        {
+            "name": "Gadgets"
+        }
+    ],
+    "values": [
+        {
+            "name": "Bolt count",
+            "position": "0x24",
+            "type": "uint32",
+            "category": "General"
+        },
+        {
+            "name": "Bomb glove",
+            "type": "bool",
+            "category": "Weapons"
+        },
+        {
+            "name": "Bomb glove ammo",
+            "type": "uint8",
+            "category": "Weapons"
+        }
+    ]
+}
