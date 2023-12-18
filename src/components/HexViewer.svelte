@@ -11,10 +11,15 @@
             } else {
                 hexByte = "00";
             }
-            if ((i + 1) % 0x10 === 0) hexByte += "\n";
+            hexByte += " ";
+            if ((i + 1) % 0x10 === 0) {
+                hexByte += "\n";
+            } else if ((i + 1) % 0x08 === 0) {
+                hexByte += " ";
+            }
             return hexByte;
         })
-        .join(" ")}
+        .join("")}
     {@html "<br>"}
 </div>
 
@@ -22,7 +27,7 @@
     div {
         padding: 10px;
         resize: vertical;
-        white-space: pre-line;
+        white-space: pre;
         font-family: monospace;
         overflow-y: auto;
         height: 400px;
