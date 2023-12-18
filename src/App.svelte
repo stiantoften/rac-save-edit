@@ -46,7 +46,9 @@
     const dbGame = gameDB.find((g) => g.codes.includes(game.name));
     if (!dbGame) return;
 
-    const fetchedGame = await fetch(`rac-save-edit/${dbGame.file}`);
+    const fetchedGame = await fetch(
+      `${import.meta.env.BASE_URL}/${dbGame.file}`,
+    );
     gameData = await fetchedGame.json();
   };
 
