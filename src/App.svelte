@@ -45,7 +45,6 @@
   const handleGameChange = async (game) => {
     const dbGame = gameDB.find((g) => g.codes.includes(game.name));
     if (!dbGame) return;
-    console.log(dbGame);
 
     const fetchedGame = await fetch(
       `${import.meta.env.BASE_URL}/${dbGame.file}`,
