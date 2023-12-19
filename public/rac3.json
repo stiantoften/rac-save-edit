@@ -1,0 +1,21 @@
+{
+    "categories": [
+        {
+            "name": "General"
+        },
+        {
+            "name": "Weapons"
+        },
+        {
+            "name": "Gadgets"
+        }
+    ],
+    "values": [
+        {
+            "name": "Filedate",
+            "position": "0xbd",
+            "type": "date",
+            "category": "General"
+        }
+    ]
+}
