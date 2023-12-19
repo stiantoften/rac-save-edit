@@ -32,6 +32,36 @@
             "name": "Bomb glove ammo",
             "type": "uint8",
             "category": "Weapons"
+        },
+        {
+            "name": "Swingshot",
+            "position": "0x1c4",
+            "type": "bool",
+            "category": "Gadgets"
+        },
+        {
+            "name": "Hydrodisplacer",
+            "position": "0x1ce",
+            "type": "bool",
+            "category": "Gadgets"
+        },
+        {
+            "name": "Trespasser",
+            "position": "0x1d2",
+            "type": "bool",
+            "category": "Gadgets"
+        },
+        {
+            "name": "Metal Detector",
+            "position": "0x1d3",
+            "type": "bool",
+            "category": "Gadgets"
+        },
+        {
+            "name": "PDA",
+            "position": "0x1d8",
+            "type": "bool",
+            "category": "Gadgets"
         }
     ]
 }

@@ -1,14 +1,11 @@
 <script>
+    import BoolInput from "./input/BoolInput.svelte";
     import DateInput from "./input/DateInput.svelte";
     import NumberInput from "./input/NumberInput.svelte";
 
     export let gameData;
     export let save;
     export let selected = 0;
-
-    const handleTabClick = (i) => {
-        selected = i;
-    };
 
     const h = (input) => Number.parseInt(input);
 </script>
@@ -17,7 +14,7 @@
     <div class="outer">
         <div class="tabbar">
             {#each gameData.categories as category, i (i)}
-                <button class="tab" on:click={() => handleTabClick(i)}>
+                <button class="tab" on:click={() => (selected = i)}>
                     {category.name}
                 </button>
             {/each}
@@ -26,13 +23,11 @@
         <div class="tab-content">
             {#each gameData.values.filter((v) => v.category === gameData.categories[selected].name) as value}
                 {#if value.type === "bool"}
-                    <label>
-                        <input
-                            type="checkbox"
-                            bind:value={save[h(value.position)]}
-                        />
-                        {value.name}
-                    </label>
+                    <BoolInput
+                        bind:save
+                        offset={h(value.position)}
+                        label={value.name}
+                    />
                 {:else if value.type === "int32"}
                     <NumberInput
                         bind:save
