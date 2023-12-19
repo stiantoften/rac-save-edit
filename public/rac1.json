@@ -20,7 +20,7 @@
         {
             "name": "Bolt count",
             "position": "0x24",
-            "type": "uint32",
+            "type": "int32",
             "category": "General"
         },
         {

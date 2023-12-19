@@ -1,5 +1,6 @@
 <script>
     import DateInput from "./input/DateInput.svelte";
+    import NumberInput from "./input/NumberInput.svelte";
 
     export let gameData;
     export let save;
@@ -32,14 +33,12 @@
                         />
                         {value.name}
                     </label>
-                {:else if value.type === "uint32"}
-                    <label>
-                        <input
-                            type="number"
-                            bind:value={save[h(value.position)]}
-                        />
-                        {value.name}
-                    </label>
+                {:else if value.type === "int32"}
+                    <NumberInput
+                        bind:save
+                        offset={h(value.position)}
+                        label={value.name}
+                    />
                 {:else if value.type === "date"}
                     <DateInput
                         bind:day={save[h(value.position)]}
