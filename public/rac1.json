@@ -12,6 +12,12 @@
     ],
     "values": [
         {
+            "name": "Filedate",
+            "position": "0x4d",
+            "type": "date",
+            "category": "General"
+        },
+        {
             "name": "Bolt count",
             "position": "0x24",
             "type": "uint32",

@@ -1,4 +1,6 @@
 <script>
+    import DateInput from "./input/DateInput.svelte";
+
     export let gameData;
     export let save;
     export let selected = 0;
@@ -24,7 +26,10 @@
             {#each gameData.values.filter((v) => v.category === gameData.categories[selected].name) as value}
                 {#if value.type === "bool"}
                     <label>
-                        <input type="checkbox" />
+                        <input
+                            type="checkbox"
+                            bind:value={save[h(value.position)]}
+                        />
                         {value.name}
                     </label>
                 {:else if value.type === "uint32"}
@@ -35,6 +40,13 @@
                         />
                         {value.name}
                     </label>
+                {:else if value.type === "date"}
+                    <DateInput
+                        bind:day={save[h(value.position)]}
+                        bind:month={save[h(value.position) + 1]}
+                        bind:year={save[h(value.position) + 2]}
+                        label={value.name}
+                    />
                 {/if}
             {/each}
         </div>
