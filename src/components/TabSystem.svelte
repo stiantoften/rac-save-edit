@@ -14,7 +14,11 @@
     <div class="outer">
         <div class="tabbar">
             {#each gameData.categories as category, i (i)}
-                <button class="tab" on:click={() => (selected = i)}>
+                <button
+                    class="tab"
+                    class:selected={selected == i}
+                    on:click={() => (selected = i)}
+                >
                     {category.name}
                 </button>
             {/each}
@@ -71,5 +75,9 @@
         border-bottom: none;
         padding: 4px 20px;
         cursor: default;
+    }
+
+    .tab.selected {
+        background-color: rgb(233, 233, 233);
     }
 </style>
