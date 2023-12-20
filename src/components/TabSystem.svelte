@@ -6,8 +6,6 @@
     export let gameData;
     export let save;
     export let selected = 0;
-
-    const h = (input) => Number.parseInt(input);
 </script>
 
 {#if gameData && save}
@@ -29,20 +27,20 @@
                 {#if value.type === "bool"}
                     <BoolInput
                         bind:save
-                        offset={h(value.position)}
+                        offset={value.offset}
                         label={value.name}
                     />
                 {:else if value.type === "int32"}
                     <NumberInput
                         bind:save
-                        offset={h(value.position)}
+                        offset={value.offset}
                         label={value.name}
                     />
                 {:else if value.type === "date"}
                     <DateInput
-                        bind:day={save[h(value.position)]}
-                        bind:month={save[h(value.position) + 1]}
-                        bind:year={save[h(value.position) + 2]}
+                        bind:day={save[value.offset]}
+                        bind:month={save[value.offset + 1]}
+                        bind:year={save[value.offset + 2]}
                         label={value.name}
                     />
                 {/if}

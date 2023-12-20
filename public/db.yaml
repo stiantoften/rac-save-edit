@@ -1,0 +1,14 @@
+- name: Ratchet & Clank
+  file: rac1.yaml
+  codes:
+  - BASCUS-97199RATCHET
+
+- name: Ratchet & Clank - Going Commando
+  file: rac2.yaml
+  codes:
+  - BASCUS-97353RATCHET
+
+- name: Ratchet & Clank - Up Your Arsenal
+  file: rac3.yaml
+  codes:
+  - BASCUS-97353RATCHET

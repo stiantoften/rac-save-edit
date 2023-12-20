@@ -1,5 +1,4 @@
 <script>
-  import gameDB from "./assets/db.json";
   import { readPs2 } from "./lib/ps2-reader";
   import { readBcdByte } from "./lib/buffer-reader";
 
@@ -9,6 +8,14 @@
   import HexViewer from "./components/HexViewer.svelte";
   import ResetButton from "./components/ResetButton.svelte";
   import TabSystem from "./components/TabSystem.svelte";
+  import { onMount } from "svelte";
+  import { parse, stringify } from "yaml";
+
+  let gameDB = [];
+  onMount(async () => {
+    const fetchedDB = await fetch(`${import.meta.env.BASE_URL}/db.yaml`);
+    gameDB = parse(await fetchedDB.text());
+  });
 
   let file;
   let mc;
@@ -49,7 +56,7 @@
     const fetchedGame = await fetch(
       `${import.meta.env.BASE_URL}/${dbGame.file}`,
     );
-    gameData = await fetchedGame.json();
+    gameData = parse(await fetchedGame.text());
   };
 
   $: if (save) {
@@ -92,8 +99,8 @@
     <SaveSelector game={selectedGame} bind:selected={selectedSave} />
     {#if save}
       <HexViewer data={save} />
+      <TabSystem {gameData} bind:save />
     {/if}
-    <TabSystem {gameData} bind:save />
   {/if}
 </div>
 

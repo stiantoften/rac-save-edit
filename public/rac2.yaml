@@ -1,0 +1,10 @@
+categories:
+- name: General
+- name: Weapons
+- name: Gadgets
+
+values:
+- offset: 0x7d
+  name: Filedate
+  type: date
+  category: General
