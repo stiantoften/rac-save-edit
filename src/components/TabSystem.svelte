@@ -23,7 +23,7 @@
         </div>
 
         <div class="tab-content">
-            {#each dbGameData.values.filter((v) => v.category === dbGameData.categories[selected].name) as value}
+            {#each dbGameData.values.filter((v) => v.category === dbGameData.categories[selected].name) as value (value.offset)}
                 {#if value.type === "bool"}
                     <BoolInput
                         bind:save
