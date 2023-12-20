@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte";
   import { readPs2 } from "./lib/ps2-reader";
-  import { readBcdByte } from "./lib/buffer-reader";
   import { load as parseYaml } from "js-yaml";
 
   import Dropzone from "./components/Dropzone.svelte";
@@ -10,6 +9,7 @@
   import ResetButton from "./components/ResetButton.svelte";
   import SaveSelector from "./components/SaveSelector.svelte";
   import GameSelector from "./components/GameSelector.svelte";
+  import { readUint16 } from "./lib/buffer-reader";
 
   let gameDB = [];
   onMount(async () => {
@@ -21,13 +21,10 @@
   let mc;
   let save;
 
-  let boltCount;
-  let date;
-
   let selectedGame;
   let selectedSave;
 
-  let gameData;
+  let dbGameData;
 
   const readFile = (file) =>
     new Promise((resolve) => {
@@ -39,6 +36,7 @@
     });
 
   const processFile = async (file) => {
+    if (!file) return;
     const buff = await readFile(file);
     const arr = new Uint8Array(buff);
 
@@ -46,47 +44,36 @@
       mc = readPs2(arr);
     } else if (file.name.endsWith(".bin")) {
       save = arr;
+      const magic = readUint16(arr, 0);
+      const dbGame = gameDB.find((g) => g.magic === magic);
+      if (!dbGame) return;
+      await loadDbGame(dbGame);
     }
   };
 
-  const handleGameChange = async (game) => {
-    const dbGame = gameDB.find((g) => g.codes.includes(game.name));
-    if (!dbGame) return;
-
+  const loadDbGame = async (dbGame) => {
     const fetchedGame = await fetch(
       `${import.meta.env.BASE_URL}/${dbGame.file}`,
     );
-    gameData = parseYaml(await fetchedGame.text());
+    dbGameData = parseYaml(await fetchedGame.text());
   };
 
-  $: if (save) {
-    boltCount = save[36];
-    date =
-      readBcdByte(save, 0x4d) +
-      "/" +
-      readBcdByte(save, 0x4e) +
-      "/" +
-      readBcdByte(save, 0x4f);
-  }
-
-  $: if (file) {
-    processFile(file);
-  }
-
-  $: if (selectedGame) {
-    handleGameChange(selectedGame);
-  }
-
-  $: if (selectedSave) {
-    save = selectedSave.content;
-  }
+  const handleGameChange = async (game) => {
+    if (!game) return;
+    const dbGame = gameDB.find((g) => g.codes.includes(game.name));
+    if (!dbGame) return;
+    await loadDbGame(dbGame);
+  };
 
   const handleReset = () => {
     file = null;
     mc = null;
     save = null;
-    console.log(file);
   };
+
+  $: processFile(file);
+  $: handleGameChange(selectedGame);
+  $: save = selectedSave?.content;
 </script>
 
 <h1>Rachet & Clank Save Editor</h1>
@@ -95,11 +82,11 @@
     <Dropzone bind:file />
   {:else}
     <ResetButton on:click={handleReset} />
-    <GameSelector {mc} {gameDB} bind:selected={selectedGame} />
-    <SaveSelector game={selectedGame} bind:selected={selectedSave} />
+    <GameSelector bind:value={selectedGame} {mc} {gameDB} />
+    <SaveSelector bind:value={selectedSave} game={selectedGame} />
     {#if save}
       <HexViewer data={save} />
-      <TabSystem {gameData} bind:save />
+      <TabSystem {dbGameData} bind:save />
     {/if}
   {/if}
 </div>

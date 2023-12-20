@@ -3,7 +3,7 @@
 </script>
 
 <div>
-    {[...data]
+    {[...new Uint8Array(data)]
         .map((c, i) => {
             let hexByte = "";
             if (i == 0) {

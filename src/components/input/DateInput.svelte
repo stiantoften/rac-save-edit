@@ -1,10 +1,20 @@
 <script>
-    import { convertFromBcd, convertToBcd } from "../../lib/buffer-reader";
-
     export let day;
     export let month;
     export let year;
     export let label;
+
+    const convertToBcd = (input) => {
+        const tens = ~~(input / 16);
+        const ones = input % 16;
+        return tens * 10 + ones;
+    };
+
+    const convertFromBcd = (input) => {
+        const tens = ~~(input / 10);
+        const ones = input % 10;
+        return tens * 16 + ones;
+    };
 
     let value =
         "20" +

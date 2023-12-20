@@ -1,5 +1,6 @@
 - name: Ratchet & Clank
   file: rac1.yaml
+  magic: 0x1530
   codes:
   - BASCUS-97199RATCHET
 

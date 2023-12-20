@@ -3,15 +3,15 @@
     import DateInput from "./input/DateInput.svelte";
     import NumberInput from "./input/NumberInput.svelte";
 
-    export let gameData;
+    export let dbGameData;
     export let save;
     export let selected = 0;
 </script>
 
-{#if gameData && save}
+{#if dbGameData && save}
     <div class="outer">
         <div class="tabbar">
-            {#each gameData.categories as category, i (i)}
+            {#each dbGameData.categories as category, i (i)}
                 <button
                     class="tab"
                     class:selected={selected == i}
@@ -23,7 +23,7 @@
         </div>
 
         <div class="tab-content">
-            {#each gameData.values.filter((v) => v.category === gameData.categories[selected].name) as value}
+            {#each dbGameData.values.filter((v) => v.category === dbGameData.categories[selected].name) as value}
                 {#if value.type === "bool"}
                     <BoolInput
                         bind:save

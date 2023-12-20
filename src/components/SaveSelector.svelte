@@ -1,10 +1,10 @@
 <script>
     export let game;
-    export let selected;
+    export let value;
 </script>
 
 {#if game}
-    <select bind:value={selected}>
+    <select bind:value>
         {#each game.content.filter((c) => c.name.includes("save")) as save}
             <option value={save}>{save.name}</option>
         {/each}
