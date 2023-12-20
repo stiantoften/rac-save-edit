@@ -2,6 +2,7 @@ categories:
 - name: General
 - name: Weapons
 - name: Gadgets
+- name: Items
 
 values:
 - offset: 0x24
@@ -14,13 +15,70 @@ values:
   type: date
   category: General
 
-- name: Bomb glove
+- offset: 0x1ba
+  name: Heli-Pack
+  type: bool
+  category: Gadgets
+
+- offset: 0x1bb
+  name: Thruster-Pack
+  type: bool
+  category: Gadgets
+
+- offset: 0x1bc
+  name: Hydro-Pack
+  type: bool
+  category: Gadgets
+
+- offset: 0x1bd
+  name: Sonic Summoner
+  type: bool
+  category: Gadgets
+
+- offset: 0x1be
+  name: O2 Mask
+  type: bool
+  category: Gadgets
+
+- offset: 0x1bf
+  name: Pilot's Helmet
+  type: bool
+  category: Gadgets
+
+- offset: 0x1c2
+  name: Bomb Glove
   type: bool
   category: Weapons
 
-- name: Bomb glove ammo
-  type: uint8
-  category: Weapons
+- offset: 0x1c8
+  name: Pyrocitor
+  type: bool
+  category: Gadgets
+
+- offset: 0x1d4
+  name: Magneboots
+  type: bool
+  category: Gadgets
+
+- offset: 0x1d5
+  name: Grindboots
+  type: bool
+  category: Gadgets
+
+- offset: 0x1d6
+  name: Hoverboard
+  type: bool
+  category: Items
+
+- offset: 0x1d9
+  name: Map-o-matic
+  type: bool
+  category: Items
+
+- offset: 0x1da
+  name: Bolt Grabber
+  type: bool
+  category: Items
 
 - offset: 0x1c4
   name: Swingshot
@@ -46,3 +104,8 @@ values:
   name: PDA
   type: bool
   category: Gadgets
+
+- offset: 0x1db
+  name: Persuader
+  type: bool
+  category: Items
