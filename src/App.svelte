@@ -1,20 +1,20 @@
 <script>
+  import { onMount } from "svelte";
   import { readPs2 } from "./lib/ps2-reader";
   import { readBcdByte } from "./lib/buffer-reader";
+  import { load as parseYaml } from "js-yaml";
 
   import Dropzone from "./components/Dropzone.svelte";
-  import GameSelector from "./components/GameSelector.svelte";
-  import SaveSelector from "./components/SaveSelector.svelte";
+  import TabSystem from "./components/TabSystem.svelte";
   import HexViewer from "./components/HexViewer.svelte";
   import ResetButton from "./components/ResetButton.svelte";
-  import TabSystem from "./components/TabSystem.svelte";
-  import { onMount } from "svelte";
-  import { parse, stringify } from "yaml";
+  import SaveSelector from "./components/SaveSelector.svelte";
+  import GameSelector from "./components/GameSelector.svelte";
 
   let gameDB = [];
   onMount(async () => {
     const fetchedDB = await fetch(`${import.meta.env.BASE_URL}/db.yaml`);
-    gameDB = parse(await fetchedDB.text());
+    gameDB = parseYaml(await fetchedDB.text());
   });
 
   let file;
@@ -56,7 +56,7 @@
     const fetchedGame = await fetch(
       `${import.meta.env.BASE_URL}/${dbGame.file}`,
     );
-    gameData = parse(await fetchedGame.text());
+    gameData = parseYaml(await fetchedGame.text());
   };
 
   $: if (save) {
