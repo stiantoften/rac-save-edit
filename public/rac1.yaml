@@ -45,15 +45,80 @@ values:
   type: bool
   category: Gadgets
 
+- offset: 0x1c1
+  name: Suck Cannon
+  type: bool
+  category: Weapons
+
 - offset: 0x1c2
   name: Bomb Glove
+  type: bool
+  category: Weapons
+
+- offset: 0x1c3
+  name: Devastator
+  type: bool
+  category: Weapons
+
+- offset: 0x1c5
+  name: Visibomb Gun
+  type: bool
+  category: Weapons
+
+- offset: 0x1c6
+  name: Taunter
+  type: bool
+  category: Weapons
+
+- offset: 0x1c7
+  name: Blaster
   type: bool
   category: Weapons
 
 - offset: 0x1c8
   name: Pyrocitor
   type: bool
-  category: Gadgets
+  category: Weapons
+
+- offset: 0x1c9
+  name: Mine Glove
+  type: bool
+  category: Weapons
+
+- offset: 0x1ca
+  name: Walloper
+  type: bool
+  category: Weapons
+
+- offset: 0x1cb
+  name: Tesla Claw
+  type: bool
+  category: Weapons
+
+- offset: 0x1cc
+  name: Glove of Doom
+  type: bool
+  category: Weapons
+
+- offset: 0x1cd
+  name: Morph-o-ray
+  type: bool
+  category: Weapons
+
+- offset: 0x1cf
+  name: R.Y.N.O
+  type: bool
+  category: Weapons
+
+- offset: 0x1d0
+  name: Drone Device
+  type: bool
+  category: Weapons
+
+- offset: 0x1d1
+  name: Decoy Glove
+  type: bool
+  category: Weapons
 
 - offset: 0x1d4
   name: Magneboots
