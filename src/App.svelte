@@ -69,6 +69,8 @@
   const handleReset = () => {
     file = null;
     mc = null;
+    selectedGame = null;
+    selectedSave = null;
     save = null;
   };
 
